@@ -10,12 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_15_195216) do
+ActiveRecord::Schema.define(version: 2022_02_16_140012) do
 
-  create_table "projetos", force: :cascade do |t|
-    t.string "name"
+  create_table "answers", force: :cascade do |t|
+    t.string "content"
+    t.integer "fomulary_id"
+    t.integer "question_id"
+    t.integer "visit_id"
+    t.datetime "answered_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["fomulary_id"], name: "index_answers_on_fomulary_id"
+    t.index ["question_id"], name: "index_answers_on_question_id"
+    t.index ["visit_id"], name: "index_answers_on_visit_id"
   end
 
 end

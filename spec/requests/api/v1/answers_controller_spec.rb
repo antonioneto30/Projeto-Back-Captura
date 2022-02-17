@@ -4,10 +4,10 @@ RSpec.describe 'Formularies', type: :request do
 
 	before(:all) do
 		@user = User.create!(name: 'Jorge', password: 'jorg&42', password_confirmation: 'jorg&42', email: 'jorge@gmail.com', cpf: '124937584611') 
-		@visit = Visit.create!(:date => Date.new(2022,2,17), :status => "REALIZANDO", :checkin_at => DateTime.new(2021,7,6,8,0,0), :checkout_at => DateTime.new(2021,7,8,14,0,0), :user_id => "#{@user.id}")
-		@formulary = Formulary.create!(name: 'formulario')
+		@visit = Visit.create!(:date => Date.new(2022,2,17), :status => "REALIZANDO", :checkin_at => DateTime.new(2022,2,17,7,0,0), :checkout_at => DateTime.new(2022,2,17,15,0,0), :user_id => "#{@user.id}")
+		@formulary = Formulary.create!(name: 'formulary')
 		@question = Question.create!(name: 'question', formulary_id: "#{@formulary.id}", question_type: 'type')
-		@answer = Answer.create!(content: 'content', formulary_id: "#{@formulary.id}", question_id: "#{@question.id}", visit_id: "#{@visit.id}", answered_at:DateTime.new(2021,7,8,14,0,0))
+		@answer = Answer.create!(content: 'content', formulary_id: "#{@formulary.id}", question_id: "#{@question.id}", visit_id: "#{@visit.id}", answered_at:DateTime.new(2022,2,17,15,0,0))
 	end
 
 	describe '#index' do
@@ -27,13 +27,13 @@ RSpec.describe 'Formularies', type: :request do
 	describe '#create' do
 		it 'when the answer is created' do
 			authentication = AuthenticateUser.call(@user.email, @user.password)
-			post '/answers', params: {:content => 'content', :formulary_id => "#{@formulary.id}", :question_id => "#{@question.id}", :visit_id => "#{@visit.id}", :answered_at => DateTime.new(2021,7,8,14,0,0)}, headers: {"Authorization" => "Bearer #{authentication.result}"}
+			post '/answers', params: {:content => 'content', :formulary_id => "#{@formulary.id}", :question_id => "#{@question.id}", :visit_id => "#{@visit.id}", :answered_at => DateTime.new(2022,2,17,15,0,0)}, headers: {"Authorization" => "Bearer #{authentication.result}"}
 			expect(response).to be_successful
 			expect(response).to have_http_status(201)
 		end
 
 		it 'when the user is not authenticated' do
-			post '/answers', params: {:content => 'content', :formulary_id => "#{@formulary.id}", :question_id => "#{@question.id}", :visit_id => "#{@visit.id}", :answered_at => DateTime.new(2021,7,8,14,0,0)}
+			post '/answers', params: {:content => 'content', :formulary_id => "#{@formulary.id}", :question_id => "#{@question.id}", :visit_id => "#{@visit.id}", :answered_at => DateTime.new(2022,2,17,15,0,0)}
 			expect(response).to have_http_status(401)
 		end
 	end
